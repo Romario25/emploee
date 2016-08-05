@@ -36,11 +36,21 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Employee', 'url' => ['/employee/index']],
+            ['label' => 'Interviews', 'url' => ['/interview/index']],
+            ['label' => 'Contracts', 'url' => ['/contract/index']],
+            ['label' => 'Positions', 'url' => ['/position/index']],
+            ['label' => 'Orders', 'url' => ['/order/index'], 'items' => [
+                ['label' => 'Common', 'url' => ['/order/index']],
+                ['label' => 'Recruits', 'url' => ['/recruit/index']],
+                ['label' => 'Assignments', 'url' => ['/assignment/index']],
+                ['label' => 'Vacations', 'url' => ['/vacation/index']],
+                ['label' => 'Dismisses', 'url' => ['/dismiss/index']],
+                ['label' => 'Bonuses', 'url' => ['/bonus/index']],
+            ]],
+            ['label' => 'Logs', 'url' => ['/log/index']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+            ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post', ['class' => 'navbar-form'])
@@ -51,6 +61,7 @@ AppAsset::register($this);
                 . Html::endForm()
                 . '</li>'
             )
+
         ],
     ]);
     NavBar::end();
