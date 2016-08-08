@@ -5,9 +5,9 @@ use yii\jui\DatePicker;
 
 
 /* @var $this yii\web\View */
-/* @var $updateForm \app\forms\InterviewJoinForm */
+/* @var $joinForm \app\forms\InterviewJoinForm */
 
-$this->title = 'Редактирование интервью';
+$this->title = 'Пригласить на интервью';
 $this->params['breadcrumbs'][] = ['label' => 'Интервью', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -17,20 +17,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($updateForm, 'date')->widget(DatePicker::classname(), [
+    <?= $form->field($joinForm, 'date')->widget(DatePicker::classname(), [
         'language' => 'ru',
         'dateFormat' => 'yyyy-MM-dd',
         'options' => ['class' => 'form-control']
     ]) ?>
 
-    <?= $form->field($updateForm, 'firstName')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($joinForm, 'firstName')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($updateForm, 'lastName')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($joinForm, 'lastName')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($updateForm, 'email')->textInput(['maxlength' => true]) ?>
-    
+    <?= $form->field($joinForm, 'email')->textInput(['maxlength' => true]) ?>
+
+
+
     <div class="form-group">
-        <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Create', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
