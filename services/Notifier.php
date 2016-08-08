@@ -11,7 +11,7 @@ namespace app\services;
 
 use Yii;
 
-class Notifier
+class Notifier implements NotifierInterface
 {
     public function notice($view, $email, $subject, $message){
         Yii::$app->mailer->compose($view, ['model' => $message])

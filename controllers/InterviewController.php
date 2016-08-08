@@ -9,6 +9,7 @@ use app\services\StaffService;
 use Yii;
 use app\models\Interview;
 use app\models\InterviewSearch;
+use yii\base\Module;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -18,6 +19,16 @@ use yii\filters\VerbFilter;
  */
 class InterviewController extends Controller
 {
+
+    private $staffService;
+
+    public function __construct($id, Module $module, StaffService $staffService, array $config = [])
+    {
+        $this->staffService = $staffService;
+        parent::__construct($id, $module, $config = []);
+    }
+
+
     /**
      * @inheritdoc
      */
@@ -86,8 +97,16 @@ class InterviewController extends Controller
         $form = new InterviewJoinForm();
 
         if($form->load(Yii::$app->request->post()) && $form->validate()){
-            $service = new StaffService();
-            $interview = $service->joinToInterview($form->lastName, $form->firstName, $form->email, $form->date);
+            // Внедение зависимостей
+            // 1 вариант
+           // $service = Yii::$container->get(StaffService::class);
+
+            // 2 вариант
+            // $service = Yii::createObject(StaffService::class);
+
+            // 3 вариант. Переопределение конструктора
+
+            $interview = $this->staffService->joinToInterview($form->lastName, $form->firstName, $form->email, $form->date);
 
             return $this->redirect(['view', 'id'=>$interview->id]);
         } else {

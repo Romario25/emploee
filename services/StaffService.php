@@ -20,11 +20,10 @@ class StaffService
 
     private $notifier;
     
-    public function __construct(){
-        $this->interviewRepository = new InterviewRepository();
-        $this->logger = new Logger();
-        $this->notifier = new Notifier();
-
+    public function __construct(InterviewRepository $interviewRepository, Logger $logger, Notifier $notifier){
+        $this->interviewRepository = $interviewRepository;
+        $this->logger = $logger;
+        $this->notifier = $notifier;
     }
     
     /**
