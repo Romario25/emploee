@@ -2,6 +2,7 @@
 
 use app\models\Employee;
 use yii\helpers\Html;
+use yii\jui\DatePicker;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -20,6 +21,30 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'order_date')->widget(DatePicker::className(), [
+        'language' => 'ru',
+        'dateFormat' => 'yyyy-MM-dd',
+        'options' => [
+            'class' => 'form-control'
+        ]
+    ]) ?>
+
+    <?= $form->field($model, 'contract_date')->widget(DatePicker::className(), [
+        'language' => 'ru',
+        'dateFormat' => 'yyyy-MM-dd',
+        'options' => [
+            'class' => 'form-control'
+        ]
+    ]) ?>
+
+    <?= $form->field($model, 'recruit_date')->widget(DatePicker::className(), [
+        'language' => 'ru',
+        'dateFormat' => 'yyyy-MM-dd',
+        'options' => [
+            'class' => 'form-control'
+        ]
+    ]) ?>
 
     <?= $form->field($model, 'status')->dropDownList(Employee::getStatusList(), ['prompt' => 'Выберите статус']) ?>
 

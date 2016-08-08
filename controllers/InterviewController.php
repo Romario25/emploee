@@ -2,9 +2,14 @@
 
 namespace app\controllers;
 
+use app\forms\InterviewEditForm;
+use app\forms\InterviewJoinForm;
+use app\forms\InterviewRejectForm;
+use app\services\StaffService;
 use Yii;
 use app\models\Interview;
 use app\models\InterviewSearch;
+use yii\base\Module;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +19,16 @@ use yii\filters\VerbFilter;
  */
 class InterviewController extends Controller
 {
+
+    private $staffService;
+
+    public function __construct($id, Module $module, StaffService $staffService, array $config = [])
+    {
+        $this->staffService = $staffService;
+        parent::__construct($id, $module, $config = []);
+    }
+
+
     /**
      * @inheritdoc
      */
@@ -76,6 +91,31 @@ class InterviewController extends Controller
     }
 
     /**
+     * Пригласить на интервью
+     */
+    public function actionJoin(){
+        $form = new InterviewJoinForm();
+
+        if($form->load(Yii::$app->request->post()) && $form->validate()){
+            // Внедение зависимостей
+            // 1 вариант
+           // $service = Yii::$container->get(StaffService::class);
+
+            // 2 вариант
+            // $service = Yii::createObject(StaffService::class);
+
+            // 3 вариант. Переопределение конструктора
+
+            $interview = $this->staffService->joinToInterview($form->lastName, $form->firstName, $form->email, $form->date);
+
+            return $this->redirect(['view', 'id'=>$interview->id]);
+        } else {
+            return $this->render('join', ['joinForm' => $form]);
+        }
+
+    }
+
+    /**
      * Updates an existing Interview model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -83,15 +123,35 @@ class InterviewController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $interview = $this->findModel($id);
+        $form = new InterviewEditForm($interview);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+
+            $service = new StaffService();
+            $model = $service->editInterview($id, $form->lastName, $form->firstName, $form->email, $form->date);
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'updateForm' => $form,
             ]);
         }
+    }
+    
+    public function actionReject($id){
+        $interview = Interview::findOne($id);
+        if($interview == null)throw new \InvalidArgumentException();
+        
+        $form = new InterviewRejectForm();
+        
+        if($form->load(Yii::$app->request->post()) && $form->validate()){
+            $service = new StaffService();
+            $service->rejectInterview($id, $form->reason);
+            return $this->redirect('index');
+        }
+        
+        return $this->render('reject', ['rejectForm' => $form]);
     }
 
     /**
