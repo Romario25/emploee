@@ -8,7 +8,7 @@ use app\models\Interview;
  * Date: 08.08.16
  * Time: 14:52
  */
-class InterviewRepository
+class InterviewRepository implements InterviewRepositoryInterface
 {
     public function find($id){
         $interview = Interview::findOne($id);

@@ -3,6 +3,7 @@ namespace app\services;
 use app\models\Interview;
 use app\models\Log;
 use app\repositories\InterviewRepository;
+use app\repositories\InterviewRepositoryInterface;
 use Yii;
 
 /**
@@ -20,7 +21,11 @@ class StaffService
 
     private $notifier;
     
-    public function __construct(InterviewRepository $interviewRepository, Logger $logger, Notifier $notifier){
+    public function __construct(
+        InterviewRepositoryInterface $interviewRepository,
+        LoggerInterface $logger,
+        NotifierInterface $notifier)
+    {
         $this->interviewRepository = $interviewRepository;
         $this->logger = $logger;
         $this->notifier = $notifier;
@@ -38,7 +43,7 @@ class StaffService
      */
     public function joinToInterview($lastName, $firstName, $email, $date){
         $interview = Interview::create($lastName, $firstName, $email, $date);
-        $this->interviewRepository->save($interview);
+        $this->interviewRepository->add($interview);
 
         if($interview->email){
             $this->notifier->notice('interview/join', $interview->email, "You are joined to interview!", $this);

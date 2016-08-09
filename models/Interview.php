@@ -117,6 +117,9 @@ class Interview extends \yii\db\ActiveRecord
     }
     
     public function reject($reason){
+        if($this->status == self::STATUS_REJECT){
+            throw new \DomainException();
+        }
         $this->status = self::STATUS_REJECT;
         $this->reject_reason = $reason;
     }
