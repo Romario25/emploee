@@ -128,8 +128,7 @@ class InterviewController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
 
-            $service = new StaffService();
-            $model = $service->editInterview($id, $form->lastName, $form->firstName, $form->email, $form->date);
+            $model = $this->staffService->editInterview($id, $form->lastName, $form->firstName, $form->email, $form->date);
             
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -146,8 +145,8 @@ class InterviewController extends Controller
         $form = new InterviewRejectForm();
         
         if($form->load(Yii::$app->request->post()) && $form->validate()){
-            $service = new StaffService();
-            $service->rejectInterview($id, $form->reason);
+
+            $this->staffService->rejectInterview($id, $form->reason);
             return $this->redirect('index');
         }
         
@@ -182,4 +181,6 @@ class InterviewController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    
 }

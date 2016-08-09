@@ -54,4 +54,14 @@ class Contract extends \yii\db\ActiveRecord
             'close_reason' => 'Close Reason',
         ];
     }
+    
+    public static function create($employeeId, $firstName, $lastName, $date){
+        $contract = new self();
+        $contract->first_name = $firstName;
+        $contract->employee_id = $employeeId;
+        $contract->last_name = $lastName;
+        $contract->date_open = $date;
+        
+        return $contract;
+    }
 }

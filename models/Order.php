@@ -87,4 +87,11 @@ class Order extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Vacation::className(), ['order_id' => 'id']);
     }
+    
+    public static function create($date){
+        $order = new self();
+        $order->date = $date;
+        
+        return $order;
+    }
 }
